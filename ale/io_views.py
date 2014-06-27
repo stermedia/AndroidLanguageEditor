@@ -50,7 +50,7 @@ def parse_zip_file(path, project):
         langs_filenames = [x for x in android_zip.namelist() if x.endswith('lang.xml') and x[:x.find('/')] in dirs]
         dirs = [x[:x.find('/')] for x in langs_filenames]
         langs_names = [x[x.rfind('-') + 1:] for x in dirs if x != 'values']
-        langs_names.insert(langs_filenames.index('values'), 'default')
+        langs_names.insert(langs_filenames.index('values/lang.xml'), 'default')
         Cell.objects.filter(language__project=project).delete()
         Language.objects.filter(project=project).delete()
         for index, lang_name in enumerate(langs_names):
