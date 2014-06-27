@@ -1,0 +1,47 @@
+{% extends "generic_not_authorized.html" %}
+
+{% block title %}Sign in{% endblock %}
+{% block head %}
+    <link href="/static/css/signin.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Please Sign In</h3>
+                    </div>
+                    <div class="panel-body">
+                        <img style="height: 64px;width: 64px;display: block;margin: 0 auto 20px;"
+                             src="/static/img/icon_128.png">
+                        {% if error_message %}
+                            <div class="alert alert-danger" id="error_message">{{ error_message|safe }}</div>
+                        {% endif %}
+                        <form action="/signin/" method="post" role="form">
+                            <fieldset>
+                                {% csrf_token %}
+                                <input type="text" class="form-control" placeholder="Username" name="username" required
+                                       autofocus>
+                                <input type="password" class="form-control" placeholder="Password" name="password"
+                                       required>
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                            </fieldset>
+                        </form>
+                        <div style="margin: 30px">
+                            <div style="height: 2px; vertical-align: middle; background-color: #bbb; text-align: center">
+                <span style="padding: 0 10px 0 10px; background-color: white; color: #777; position: relative; top: -0.5em;">
+                    OR
+                </span>
+                            </div>
+                        </div>
+                        <a href="/signup/" class="btn btn-lg btn-success btn-block">Sign up</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

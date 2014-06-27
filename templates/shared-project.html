@@ -1,0 +1,127 @@
+{% extends "generic.html" %}
+
+{% block title %}{{ project_path }}{% endblock %}
+{% block head %}
+    <script src="/static/js/editablegrid-2.0.1.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="/static/js/shared.js"></script>
+    <script>
+        hash_key = "{{ hash_key }}";
+    </script>
+    <link rel="stylesheet" href="/static/css/editablegrid-2.0.1.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="/static/css/project.css" type="text/css" media="screen">
+{% endblock %}
+{% block content %}
+    {% if project_path %}
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">{{ project_path }}</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+
+
+        <div id="tablecontent"></div>
+    {% endif %}
+{% endblock %}
+{% block modals %}
+    <!-- Modal -->
+    <div class="modal fade" id="import-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" enctype="multipart/form-data" action="/import/shared/{{ hash_key }}/">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Import ZIP file</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>{{ import_file_error_message|safe }}</div>
+                        <div class="alert alert-warning">Imoprt project from zip file will earse actual data</div>
+                        {% csrf_token %}
+                        <label for="id_zipfile">Zipfile:</label> <input id="id_zipfile" class="form-control"
+                                                                        name="zipfile" type="file"/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="add-row-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Add row</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="add-row-cell" method="post">
+                        {% csrf_token %}
+                        <p><input class="form-control" name="key" type="text" placeholder="Key" required=""></p>
+
+                        <p><textarea class="form-control" name="value" placeholder="Default value"></textarea></p>
+                        <input type="hidden" value="default" name="lang">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="add-row-submit" type="submit" class="btn btn-primary">Add row</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+{% endblock %}
+
+
+{% block navbars %}
+    <!-- /.navbar-header -->
+
+    <ul class="nav navbar-top-links navbar-right">
+        <!-- /.dropdown -->
+        <li>
+            <a class="toggle" data-toggle="modal" data-target="#add-row-modal" href="#">
+                <i class="fa fa-plus fa-fw"></i>
+            </a>
+        </li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="fa fa-wrench fa-fw"></i> <i class="fa fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a id="import_file" href="#" data-toggle="modal" data-target="#import-modal"><i
+                        class="glyphicon glyphicon-import"></i> Import ZIP</a>
+                </li>
+                <li><a id="export_file" href="/export/shared/{{ hash_key }}/"><i
+                        class="glyphicon glyphicon-floppy-save"></i> Export ZIP</a>
+                </li>
+            </ul>
+            <!-- /.dropdown-user -->
+        </li>
+        {% if user.is_authenticated %}
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="/logout/"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+        {% endif %}
+        <!-- /.dropdown -->
+    </ul>
+    <!-- /.navbar-top-links -->
+
+{% endblock %}
+
+
+
+
+
+
